@@ -45,7 +45,7 @@ public class HttpHandler {
         return stringBuilder.toString();
     }
 
-    public static String postJson(String name) {
+    public static String postJson(String name, String year) {
         String urlStr = "http://10.0.2.2:3000/students";
         HttpURLConnection conn = null;
         String status = "";
@@ -59,6 +59,7 @@ public class HttpHandler {
             conn.setDoOutput(true);
 
             JSONObject jsonParam = new JSONObject();
+            jsonParam.put("year",year);
             jsonParam.put("name", name);
             Log.i("JSON", jsonParam.toString());
 

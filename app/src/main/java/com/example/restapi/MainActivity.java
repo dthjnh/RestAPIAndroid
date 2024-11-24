@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     String name = jsonObject.getString("name");
-                    students.add(name);
+                    String year = jsonObject.getString("year");
+                    students.add(name + " (Year: " + year + ")");
                 }
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, students);
@@ -90,10 +91,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                         try {
                             JSONObject selectedStudent = jsonArray.getJSONObject(position);
-                            String studentId = selectedStudent.getString("id"); // Assuming API returns student ID
+                            String studentId = selectedStudent.getString("id");
                             String studentName = selectedStudent.getString("name");
 
-                            // Confirm delete action
                             new AlertDialog.Builder(MainActivity.this)
                                     .setTitle("Delete Student")
                                     .setMessage("Are you sure you want to delete \"" + studentName + "\"?")

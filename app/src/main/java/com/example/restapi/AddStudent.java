@@ -38,9 +38,11 @@ public class AddStudent extends AppCompatActivity {
         });
     }
 
-    public void onAddStudent(View view){
+    public void onAddStudent(View view) {
         if (nameText.getText().toString().isEmpty()) {
             Toast.makeText(this, "Name cannot be empty!", Toast.LENGTH_SHORT).show();
+        } else if (yearText.getText().toString().isEmpty() || !yearText.getText().toString().matches("\\d{4}")) {
+            Toast.makeText(this, "Year must be a valid 4-digit number!", Toast.LENGTH_SHORT).show();
         } else {
             new PostStudent().execute();
         }
@@ -51,15 +53,28 @@ public class AddStudent extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            message = HttpHandler.postJson(nameText.getText().toString());
+            String name = nameText.getText().toString();
+            String year = yearText.getText().toString();
+
+            if (year.isEmpty()) {
+                message = "Year cannot be empty!";
+            } else if(name.isEmpty()) {
+                message = "Name cannot be empty!";
+            } else {
+                message = HttpHandler.postJson(name, year);
+            }
+
             Log.d("POST RESPONSE", "message: " + message);
             return null;
         }
+
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(AddStudent.this,message,Toast.LENGTH_SHORT).show();
-            finish();
+            Toast.makeText(AddStudent.this, message, Toast.LENGTH_SHORT).show();
+            if (!message.equals("Year cannot be empty!")) {
+                finish();
+            }
         }
     }
 }
